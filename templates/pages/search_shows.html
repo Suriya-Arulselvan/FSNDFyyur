@@ -1,0 +1,23 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Shows{% endblock %}
+{% block content %}
+<h3>Number of search results for "{{search_term}}":{{showcount}}</h3>
+<div class="row shows">
+    {%for show in shows %}
+    <div class="col-sm-4">
+        <div class="tile tile-show">
+            <img src="{{ show.artist_image_link }}" alt="Artist Image" />
+            <h4>{{ show.start_time|datetime('full') }}</h4>
+            <h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+            <p>playing at</p>
+            <h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
+            <h3>
+                <a href="/shows/{{show.id}}/edit" title="Edit Show"><i class="fas fa-edit"
+                        style="padding-right:10px"></i></a>
+                <a href="" title="Delete Show"><i class="fa fa-times"></i></a>
+            </h3>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

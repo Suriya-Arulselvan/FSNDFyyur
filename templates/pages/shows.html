@@ -1,0 +1,69 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Shows{% endblock %}
+{% block content %}
+<section>
+    <h2 class="monospace">{{upcoming_shows_count}} Upcoming
+        {%if upcoming_shows_count == 1 %}Show{%else%}Shows{%endif%} </h2>
+    <div class="row shows">
+        {%for show in upcoming_shows%}
+        <div class="col-sm-4">
+            <div class="tile tile-show">
+                <img src="{{ show.artist_image_link }}" alt="Artist Image" />
+                <h4>{{ show.start_time|datetime('full') }}</h4>
+                <h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+                <p>playing at</p>
+                <h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
+                <h3>
+                    <a href="/shows/{{show.id}}/edit" title="Edit Show"><i class="fas fa-edit"
+                            style="padding-right:10px"></i></a>
+                    <a id="{{show.id}}" title="Delete Show" onclick="deleteShow(this)"><i class="fa fa-times"></i></a>
+                </h3>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</section>
+<section>
+    <h2 class="monospace">{{past_shows_count}} Past
+        {%if past_shows_count == 1 %}Show{%else%}Shows{%endif%} </h2>
+    <div class="row shows">
+        {%for show in past_shows%}
+        <div class="col-sm-4">
+            <div class="tile tile-show">
+                <img src="{{ show.artist_image_link }}" alt="Artist Image" />
+                <h4>{{ show.start_time|datetime('full') }}</h4>
+                <h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+                <p>playing at</p>
+                <h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
+                <h3>
+                    <a href="/shows/{{show.id}}/edit" title="Edit Show"><i class="fas fa-edit"
+                            style="padding-right:10px"></i></a>
+                    <a id="{{show.id}}" title="Delete Show" onclick="deleteShow(this)"><i class="fa fa-times"></i></a>
+                </h3>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</section>
+<script>
+    function deleteShow(target) {
+        showId = target.id;
+        result = confirm("Are you sure you want to delete the Show?");
+        console.log(result);
+        if (result) {
+            fetch('/shows/' + showId, {
+                method: 'DELETE'
+            }).then(function (response) {
+                if (!response.ok) {
+                    console.log("Error", response);
+                } else {
+                    console.log("Success", response);
+                    window.location = '/';
+                }
+            }).catch(function () {
+
+            })
+        }
+    }
+</script>
+{% endblock %}
